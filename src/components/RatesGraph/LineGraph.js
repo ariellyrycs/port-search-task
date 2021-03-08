@@ -132,10 +132,12 @@ export default function LineGraph ({data, className}) {
   useEffect(() => {
     const handleResize = debounce(500, () => {
       const currElement = graphContainerRef.current;
-      vis.resize({
-        width: currElement.offsetWidth,
-        height: currElement.offsetHeight,
-      })
+      if(vis) {
+        vis.resize({
+          width: currElement.offsetWidth,
+          height: currElement.offsetHeight,
+        });
+      }
     });
     window.addEventListener('resize', handleResize);
     return () => {

@@ -59,6 +59,11 @@ const generateLines = (resData) => {
   return lines;
 };
 
+export const sortLinesByDate = (resData) => {
+  //sort lexicologically by day in case it they don't come sorted already.
+  resData.sort((a, b) => (a.day || '').localeCompare(b.day || ''))
+};
+
 export const generateGraphData = (resData) => {
   if(resData.length === 0) return null;
   const lines = generateLines(resData);
@@ -66,6 +71,7 @@ export const generateGraphData = (resData) => {
   if(lines.length === 0) {
     return null;
   }
+
   return {
     xAxis: resData.map(d => d.day),
     yRange: _generateYRange(resData),
@@ -73,4 +79,19 @@ export const generateGraphData = (resData) => {
     yFormat: '$,.2s',
     xFormat: '%Y-%m-%d'
   };
+};
+
+export const filterOutOfRangeDates = (resData, [start, end]) => {
+  return resData.filter((a) => {
+    const currTime = new Date(a.day).getTime();
+    return start <= currTime && currTime <= end;
+  });
+};
+
+export const getRange = (data) => {
+  if(data.length === 0) return [];
+  return [
+    new Date(data[0].day).getTime(),
+    new Date(data[data.length - 1].day).getTime()
+  ];
 };

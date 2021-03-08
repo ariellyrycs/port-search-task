@@ -34,7 +34,7 @@ function App() {
   return (
     <Container className="App p-3 vh-100 d-flex flex-column">
       <Row>
-        <Col xs={4}>
+        <Col xs={6} sm={4}>
           {selectedOriginPort && (
             <Form.Group>
               <Form.Label>Origin: </Form.Label>
@@ -53,7 +53,7 @@ function App() {
             </Form.Group>
           )}
         </Col>
-        <Col xs={4}>
+        <Col xs={6} sm={4}>
           {selectedDestinationPort && (
             <Form.Group>
               <Form.Label>Destination:</Form.Label>
