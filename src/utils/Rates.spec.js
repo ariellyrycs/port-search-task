@@ -1,5 +1,4 @@
-import { generateGraphData } from './Rates.js'
-import { TestScheduler } from 'jest';
+import { generateGraphData, getRange, sortLinesByDate, filterOutOfRangeDates } from './Rates.js'
 
 describe('Rates', () => {
   let rates = [
@@ -21,7 +20,7 @@ describe('Rates', () => {
       low: 68,
       high: 1366
     }
-  ]
+  ];
   test('map correctly', () => {
     let lineOption = generateGraphData(rates);
     expect(lineOption).toStrictEqual({
@@ -91,5 +90,68 @@ describe('Rates', () => {
       high: null
     }]);
     expect(lineOption).toBe(null);
-  })
+  });
+
+  test('generate range', () => {
+    expect(getRange([{
+      day: '2021-04-31'
+    }, {
+      day: '2021-07-02'
+    }])).toStrictEqual([1619827200000, 1625184000000]);
+  });
+
+  test('not generate range when no sufficient data', () => {
+    expect(getRange([])).toStrictEqual([]);
+  });
+
+  test('sort rates date by time', () => {
+    const data = [
+      {
+        day: '2021-04-01',
+        mean: 690,
+        low: 68,
+        high: 1366
+      },
+      {
+        day: '2019-01-02',
+        mean: 690,
+        low: 68,
+        high: 1366
+      },
+      {
+        day: '2021-02-03',
+        mean: 690,
+        low: 68,
+        high: 1366
+      }
+    ];
+    sortLinesByDate(data);
+    expect(data).toStrictEqual([{
+        day: '2019-01-02',
+        mean: 690,
+        low: 68,
+        high: 1366
+      }, {
+        day: '2021-02-03',
+        mean: 690,
+        low: 68,
+        high: 1366
+      }, {
+        day: '2021-04-01',
+        mean: 690,
+        low: 68,
+        high: 1366
+      }
+    ]);
+  });
+
+  test('filter by range', () => {
+    expect(filterOutOfRangeDates(rates, [1609545600000, 1609545600000]))
+      .toStrictEqual([{
+        day: '2021-01-02',
+        mean: 690,
+        low: 68,
+        high: 1366
+      }]);
+  });
 });
