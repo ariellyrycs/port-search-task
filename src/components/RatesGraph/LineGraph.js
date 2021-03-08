@@ -70,6 +70,8 @@ class D3Component {
     for(let item of this.data.lines) {
       this._loadLine(item, x, y);
     }
+
+    this._addDescription(dataProp);
   }
 
   _loadLine = (line, xLine, yLine) => {
@@ -82,6 +84,22 @@ class D3Component {
         .x(({x}) => xLine(this.dateFormat(x)))
         .y(({y}) => yLine(y))
       );
+  }
+
+  _addDescription = (data) => {
+    const textContainer = this.svg.append('g')
+      .attr('text-anchor', 'start')
+      .attr('transform', `translate(${this.margin.left + 20},20)`);
+    data.lines.forEach(({color, label}, i) => {
+      const text = textContainer.append('text')
+        .attr('transform', `translate(0, ${20 * i})`);
+      text.append('tspan').text('----   ')
+        .attr('stroke', color)
+        .attr('stroke-width', 3)
+      text.append('tspan')
+        .text(label)
+        .attr('stroke-width', 2);
+    });
   }
 
   resize = ({width, height}) => {

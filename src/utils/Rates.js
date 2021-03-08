@@ -1,14 +1,27 @@
 
+const linesConfig = [{
+  label: 'Mean',
+  key: 'mean',
+  color: 'red'
+}, {
+  label: 'Low',
+  key: 'low',
+  color: 'blue'
+}, {
+  label: 'High',
+  key: 'high',
+  color: 'green'
+}];
+
 const _generatePropLineFormat = (data, propName) =>
   data.filter(d => d[propName] !== null)
       .map((d) => ({x: d.day, y: d[propName]}));
 
-
 const getPointsValues = (d) => {
   const values = [];
-  if(d.low) values.push(d.low);
-  if(d.high) values.push(d.high);
-  if(d.mean) values.push(d.mean);
+  for(let {key} of linesConfig) {
+    if(d[key]) values.push(d[key]);
+  }
   return values;
 }
 
@@ -31,25 +44,32 @@ const _generateYRange = resData => {
   return [Math.max(minY - yExtraRange, 0), maxY + yExtraRange]
 }
 
-export const generateGraphData = (resData) => {
-  if(resData.length === 0) return null
+const generateLines = (resData) => {
+  const lines = [];
+  for(let { key, color, label} of linesConfig) {
+    const currLine = _generatePropLineFormat(resData, key);
+    if(currLine.length > 0) {
+      lines.push({
+        color,
+        label,
+        data: currLine
+      });
+    }
+  }
+  return lines;
+};
 
+export const generateGraphData = (resData) => {
+  if(resData.length === 0) return null;
+  const lines = generateLines(resData);
+  // if there is no available lines, should not show the graph
+  if(lines.length === 0) {
+    return null;
+  }
   return {
     xAxis: resData.map(d => d.day),
     yRange: _generateYRange(resData),
-    lines: [{
-      label: 'Mean',
-      data: _generatePropLineFormat(resData, 'mean'),
-      color: 'red'
-    }, {
-      label: 'Low',
-      data: _generatePropLineFormat(resData, 'low'),
-      color: 'blue'
-    }, {
-      label: 'High',
-      data: _generatePropLineFormat(resData, 'high'),
-      color: 'green'
-    }],
+    lines,
     yFormat: '$,.2s',
     xFormat: '%Y-%m-%d'
   };

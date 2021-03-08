@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import { Container, Row, Col, Form } from 'react-bootstrap';
+import { getAvailableRates } from './services/Rates.js';
 import RatesGraph from './components/RatesGraph/RatesGraph.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -14,16 +15,16 @@ function App() {
   useEffect(() => {
     const getPorts = async () => {
       try {
-        const res = await fetch(`/prod/ports`).then(res => res.json());
-        setPorts(res);
-        if(res.length > 0) {
-          setSelectedOriginPort(res[0].code);
-          if(res.length > 1) {
-            setSelectedDestinationPort(res[1].code);
+        const json = await getAvailableRates();
+        setPorts(json);
+        if(json.length > 0) {
+          setSelectedOriginPort(json[0].code);
+          if(json.length > 1) {
+            setSelectedDestinationPort(json[1].code);
           }
         }
       } catch(e) {
-        console.error(e)
+        console.error(e);
       }
     };
 

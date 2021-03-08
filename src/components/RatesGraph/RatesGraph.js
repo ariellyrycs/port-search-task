@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { generateGraphData } from '../../utils/lineGraphUtil';
+import { generateGraphData } from '../../utils/Rates.js';
+import { getDetailRates } from '../../services/Rates.js';
 import { Spinner } from 'react-bootstrap';
 import LineGraph from './LineGraph.js'
 
@@ -12,10 +13,9 @@ export default function RatesGraph({origin, destination}) {
     const fetchRates = async () => {
       setLoading(true);
       try {
-        const data = await fetch(`/prod/rates?origin=${origin}&destination=${destination}`)
-          .then(res => res.json())
-        if(data.message) throw new Error(data.message);
-        setRates(generateGraphData(data));
+        const json = await getDetailRates(origin, destination);
+        if(json.message) throw new Error(json.message);
+        setRates(generateGraphData(json));
       } catch(e) {
         setRates(null);
       }
