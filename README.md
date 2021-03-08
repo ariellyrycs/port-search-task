@@ -1,8 +1,8 @@
 # Port search
 
-Create .env file out of the .env.example
+This is a project that help visualize transportation ships between different cities consumer xeneta api.
 
-You shold also append api key to access the api
+Create .env file out of the .env.example and append api key to access the API
 
 ``` API_KEY="YOUR API KEY" ```
 
@@ -20,6 +20,6 @@ To start
 
 To run tests
 
-Here is an example of how it looks like.
+### Here is an example of how it looks like.
 
 ![alt text](https://github.com/ariellyrycs/port-search-task/blob/main/example.png?raw=true)
