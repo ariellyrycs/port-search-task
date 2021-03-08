@@ -1,6 +1,6 @@
 # Port search
 
-This is a project that help visualize transportation ships between different cities consumer xeneta api.
+This is a project that helps visualize transportation ships between different cities consuming xeneta api.
 
 Create .env file out of the .env.example and append api key to access the API
 
