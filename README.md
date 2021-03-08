@@ -4,7 +4,7 @@ Create .env file out of the .env.example
 
 You shold also append api key to access the api
 
-API_KEY="YOUR API KEY"
+``` API_KEY="YOUR API KEY" ```
 
 Use node v12 or above
 
