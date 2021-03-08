@@ -22,4 +22,4 @@ To run tests
 
 ### Here is an example of how it looks like.
 
-![alt text](https://github.com/ariellyrycs/port-search-task/blob/main/example.png?raw=true)
+![alt text](https://github.com/ariellyrycs/port-search-task/blob/main/example.png)
